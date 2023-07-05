@@ -9,7 +9,7 @@ import Linear.Grammar.Types.Inequalities
   )
 import Linear.Constraints.Weights (Weight (Weight))
 
-import Data.Semigroup (Option (Option), First (First, getFirst), Min (Min, getMin))
+import Data.Semigroup (First (First, getFirst), Min (Min, getMin))
 import qualified Data.Map as Map
 import qualified Data.IntMap as IntMap
 import qualified Data.Vector as V
@@ -24,8 +24,8 @@ nextBasicPrimal :: ( Ord a
                      -> Maybe k
 nextBasicPrimal (Equ objective) = do
   -- gets the first successful, minimal result
-  let minSnd var coeff = Option $ Just $ Min $ Snd (var, coeff)
-      Option mKeyVal = Map.foldMapWithKey minSnd (getVars objective)
+  let minSnd var coeff = Just $ Min $ Snd (var, coeff)
+      mKeyVal = Map.foldMapWithKey minSnd (getVars objective)
   (var,coeff) <- getSnd . getMin <$> mKeyVal
   guard (coeff < 0) -- Must be positive, but the /most/ negative out of the set
   pure var
@@ -59,8 +59,8 @@ nextBasicDual objective row = do
   let osMap = getVars (getEqu objective)
       xsMap = getVars row
       allVars = osMap <> xsMap
-      (Option mKeyVar) =
-        let go var _ = Option $ (\ratio -> Min $ Snd (var,ratio)) <$> blandRatioDual var objective row
+      mKeyVar =
+        let go var _ = (\ratio -> Min $ Snd (var,ratio)) <$> blandRatioDual var objective row
         in  Map.foldMapWithKey go allVars
   (var,_) <- getSnd . getMin <$> mKeyVar
   pure var
@@ -95,8 +95,8 @@ nextRowPrimal :: ( Ord k
                    -> IntMap.IntMap (IneqStdForm k a a) -- ^ Restricted "slack" tableau
                    -> Maybe Int
 nextRowPrimal var xs = do
-  let (Option mKeyVal) =
-        let go slack row = Option $ (\ratio -> Min $ Snd (slack,ratio)) <$> blandRatioPrimal var row
+  let mKeyVal =
+        let go slack row = (\ratio -> Min $ Snd (slack,ratio)) <$> blandRatioPrimal var row
         in  IntMap.foldMapWithKey go xs
   (slack,_) <- getSnd . getMin <$> mKeyVal
   pure slack
@@ -107,9 +107,9 @@ nextRowDual :: ( Ord c
                ) => IntMap.IntMap (IneqStdForm k a c)
                  -> Maybe Int
 nextRowDual xs = do
-  let (Option mKeyVal) =
+  let mKeyVal =
         IntMap.foldMapWithKey
-          (\slack row -> Option $ Just $ Min $ Snd (slack, getConst row))
+          (\slack row -> Just $ Min $ Snd (slack, getConst row))
           xs
   (slack,const) <- getSnd . getMin <$> mKeyVal
   guard (const < 0)

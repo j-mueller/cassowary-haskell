@@ -35,8 +35,7 @@ import Linear.Grammar.Types.Inequalities
 
 import Data.Maybe (fromMaybe) -- hiding (mapMaybe, catMaybes)
 import Data.Semigroup
-  ( Option (Option)
-  , Min (Min, getMin)
+  ( Min (Min, getMin)
   , First (First, getFirst)
   )
 import qualified Data.Vector as V -- hiding (length, all)
