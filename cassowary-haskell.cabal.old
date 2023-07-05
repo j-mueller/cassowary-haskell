@@ -16,7 +16,6 @@ Library
   Exposed-Modules:      Linear.Grammar
                         Linear.Grammar.Types
                         Linear.Constraints.Slack
-                        Linear.Constraints.Error
                         Linear.Constraints.Tableau
                         Linear.Constraints.Weights
                         Linear.Constraints.Cassowary

@@ -8,7 +8,6 @@ import Linear.Grammar
 import Linear.Class
 import Linear.Constraints.Cassowary
 import Linear.Constraints.Slack
-import Linear.Constraints.Error
 
 import Criterion.Main
 

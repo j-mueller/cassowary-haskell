@@ -37,7 +37,6 @@ library
       Linear.Constraints.Cassowary.Basic
       Linear.Constraints.Cassowary.Bland
       Linear.Constraints.Cassowary.Refactor
-      Linear.Constraints.Error
       Linear.Constraints.Slack
       Linear.Constraints.Tableau
       Linear.Constraints.Weights
